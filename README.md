@@ -10,15 +10,11 @@ Built as a structured 7-day learning project — production-quality UI, real arc
 - Tailwind CSS v4
 - Lucide React (icons)
 
-## Features (in progress)
+## Progress Log
 
-- [x] App shell — sidebar, header, stats summary
-- [x] Typed data layer — Project & Task interfaces
-- [x] ProjectCard — status badge, progress bar, task list
-- [x] Responsive 3-column grid
-- [ ] Interactive task checkboxes (Day 3)
-- [ ] Add project / task modal (Day 6)
-- [ ] Deploy to Vercel (Day 7)
+- **Day 1** — Vite + React + TS scaffold, first component, GitHub setup
+- **Day 2** — TypeScript types (`Project`, `Task`), props-based component tree (Dashboard → ProjectsList → ProjectCard)
+- **Day 3** — State management with `useState`, event handling (`onClick`), immutable state updates. Task checkboxes are now interactive — toggling completion updates the UI and progress bars live.
 
 ## Run locally
 
