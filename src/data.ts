@@ -6,9 +6,9 @@ export const projects: Project[] = [
     name: "Buildflow Dashboard",
     status: "in progress",
     tasks: [
-      { title: "Set up Vite + React scaffold", completed: true, assignedTo: "Eya" },
-      { title: "Define TypeScript types", completed: true, assignedTo: "Eya" },
-      { title: "Build ProjectCard component", completed: false, assignedTo: "Eya" },
+      { id: "t1", title: "Set up Vite + React scaffold", completed: true, assignedTo: "Eya" },
+      { id: "t2", title: "Define TypeScript types", completed: true, assignedTo: "Eya" },
+      { id: "t3", title: "Build ProjectCard component", completed: false, assignedTo: "Eya" },
     ]
   },
   {
@@ -16,9 +16,9 @@ export const projects: Project[] = [
     name: "Portfolio Website",
     status: "in progress",
     tasks: [
-      { title: "Design landing section", completed: true, assignedTo: "Eya" },
-      { title: "Write project descriptions", completed: false, assignedTo: "Eya" },
-      { title: "Deploy to Vercel", completed: false, assignedTo: "Eya" },
+      { id: "t4", title: "Design landing section", completed: true, assignedTo: "Eya" },
+      { id: "t5", title: "Write project descriptions", completed: false, assignedTo: "Eya" },
+      { id: "t6", title: "Deploy to Vercel", completed: false, assignedTo: "Eya" },
     ]
   },
   {
@@ -26,8 +26,8 @@ export const projects: Project[] = [
     name: "GeoStructGen Plugin",
     status: "completed",
     tasks: [
-      { title: "LangGraph agent integration", completed: true, assignedTo: "Eya" },
-      { title: "Revit parameter mapping", completed: true, assignedTo: "Eya" },
+      { id: "t7", title: "LangGraph agent integration", completed: true, assignedTo: "Eya" },
+      { id: "t8", title: "Revit parameter mapping", completed: true, assignedTo: "Eya" },
     ]
   }
 ];

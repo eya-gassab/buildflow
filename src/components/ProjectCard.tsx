@@ -1,7 +1,10 @@
 import type { Project } from "../types";
 import { CheckCircle2, Circle, ChevronRight } from "lucide-react";
 
-function ProjectCard({ project }: { project: Project }) {
+function ProjectCard({ project, onToggleTask }: { 
+  project: Project; 
+  onToggleTask: (projectId: number, taskId: string) => void; 
+}) {
   const completedTasks = project.tasks.filter((t) => t.completed).length;
   const totalTasks = project.tasks.length;
   const progress =
@@ -45,15 +48,15 @@ function ProjectCard({ project }: { project: Project }) {
 
       {/* Tasks */}
       <ul className="flex flex-col gap-2">
-        {project.tasks.map((task, index) => (
+        {project.tasks.map((task) => (
           <li
-            key={index}
+            key={task.id}
             className="flex items-center gap-2 text-sm text-gray-600"
           >
             {task.completed ? (
-              <CheckCircle2 size={16} className="text-green-500 shrink-0" />
+              <CheckCircle2 onClick={() => onToggleTask(project.id, task.id)} size={16} className="text-green-500 shrink-0" />
             ) : (
-              <Circle size={16} className="text-gray-300 shrink-0" />
+              <Circle onClick={() => onToggleTask(project.id, task.id)} size={16} className="text-gray-300 shrink-0" />
             )}
             <span
               className={task.completed ? "line-through text-gray-400" : ""}
