@@ -21,5 +21,26 @@
 - `ProjectCard` computes progress locally from its own prop (no external state needed yet)
 - `Dashboard` computes global stats (total projects, tasks done) from the same array
 
-### What's next
-- Day 3: useState + events — make checkboxes interactive, progress bar updates live
+
+## Day 3: useState + events
+- made checkboxes interactive, progress bar updates live 
+
+## Day 4 : controlled input, immutable append, and prop-drilled addTask
+### Controlled input for AddTaskForm
+- Decision: title state lives locally in AddTaskForm, not in Dashboard
+- Reason: no other component needs the draft text; lifting it would cause
+          unnecessary re-renders across the whole app on every keystroke
+
+### onAddTask receives string, not Task object
+- Decision: AddTaskForm is kept ignorant of the Task type
+- Reason: separates concerns — form collects text, Dashboard builds objects;
+          makes the form reusable in any context
+
+### ProjectCard wraps onAddTask with project.id
+- Decision: (title) => onAddTask(project.id, title)
+- Reason: AddTaskForm has no access to projectId;
+          ProjectCard is the correct scope where both exist
+
+### crypto.randomUUID() for Task ids
+- Decision: browser built-in, no library needed
+- Reason: Task.id is string, UUIDs are collision-safe, zero dependencies added

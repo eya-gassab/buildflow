@@ -1,9 +1,11 @@
 import type { Project } from "../types";
-import { CheckCircle2, Circle, ChevronRight } from "lucide-react";
+import { CheckCircle2, Circle } from "lucide-react";
+import { AddTaskForm } from "./AddTaskForm";     
 
-function ProjectCard({ project, onToggleTask }: { 
+function ProjectCard({ project, onToggleTask,onAddTask }: { 
   project: Project; 
   onToggleTask: (projectId: number, taskId: string) => void; 
+  onAddTask: (projectId: number, title: string) => void;
 }) {
   const completedTasks = project.tasks.filter((t) => t.completed).length;
   const totalTasks = project.tasks.length;
@@ -17,8 +19,7 @@ function ProjectCard({ project, onToggleTask }: {
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-4">
-      {/* Header */}
+    <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-4">      {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-base font-semibold text-gray-800">
           {project.name}
@@ -69,6 +70,7 @@ function ProjectCard({ project, onToggleTask }: {
           </li>
         ))}
       </ul>
+      <AddTaskForm onAddTask={(title) => onAddTask(project.id, title)} />
     </div>
   );
 }

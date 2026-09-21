@@ -1,4 +1,4 @@
-import type { Project } from "../types";
+import type { Project, Task } from "../types";
 import ProjectsList from "./ProjectsList";
 import { LayoutDashboard, FolderKanban, Settings } from "lucide-react";
 import { useState } from 'react';
@@ -7,6 +7,7 @@ import {projects as initialProjects} from'../data';
 function Dashboard() {
  
     const [projects , setProjects]=useState<Project[]>(initialProjects);
+    
     const totalTasks = projects.reduce((acc, p) => acc + p.tasks.length, 0);
     const doneTasks = projects.reduce((acc, p) => acc + p.tasks.filter(t => t.completed).length, 0);
     const toggleTask = (projectId: number, taskId: string) => {
@@ -22,6 +23,22 @@ function Dashboard() {
             )
             }
     ));
+    };
+    const addTask = (projectId: number, title: string): void => {
+    const newTask: Task = {
+        id: crypto.randomUUID(),
+        title: title,
+        completed: false,
+        assignedTo: "",
+    };
+
+    setProjects(prevProjects =>
+        prevProjects.map(project =>
+        project.id !== projectId
+            ? project                                          // not the right project → pass through unchanged
+            : { ...project, tasks: [...project.tasks, newTask] } // right project → copy it with new task appended
+        )
+    );
     };
     return (
         <div className="flex min-h-screen bg-gray-50 font-sans">
@@ -50,8 +67,7 @@ function Dashboard() {
             </div>
 
             {/* Projects grid */}
-            <ProjectsList projects={projects} onToggleTask={toggleTask} />
-        </main>
+            <ProjectsList projects={projects} onToggleTask={toggleTask} onAddTask={addTask} />        </main>
         </div>
     );
 }
