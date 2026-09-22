@@ -85,3 +85,19 @@
 ### Reset filter to "all" after adding a task
 
 - **Why:** on the Done tab, a newly added (unfinished) task was invisible, so the add looked broken. Data change goes up to `Dashboard`; the view change stays local.
+
+## CI/CD & Testing
+
+### Extract `filterTasks` into its own pure function
+
+- **Why:** logic embedded in a component can only be tested by rendering the component and simulating clicks. A pure function (data in → data out) can be tested directly, in milliseconds, with no DOM.
+- **Trade-off:** one extra file and import; worth it for testability.
+
+### `npm test` vs `npm run test:watch`
+
+- **Chose:** `vitest run` (exits) for `test`, plain `vitest` (watches) for `test:watch`
+- **Why:** CI needs a command that finishes and reports pass/fail. A watch process would hang the pipeline forever.
+
+### GitHub Actions runs lint → typecheck → build → test, in that order
+
+- **Why:** fail fast on the cheapest check first. No point building or testing code that doesn't even lint or type-check.

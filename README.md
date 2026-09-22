@@ -1,5 +1,7 @@
 # Buildflow — Project Management Dashboard
 
+![CI](https://github.com/eya-gassab/buildflow/actions/workflows/ci.yml/badge.svg)
+
 A project management dashboard built with React, Vite, TypeScript and Tailwind CSS.
 Built as a structured 7-day learning project — production-quality UI, real architectural patterns.
 
@@ -42,6 +44,11 @@ Built as a structured 7-day learning project — production-quality UI, real arc
 - **Day 3** — State management with `useState`, event handling (`onClick`), immutable state updates. Task checkboxes are now interactive — toggling completion updates the UI and progress bars live.
 - **Day 4** — Controlled inputs, form submission handling, immutable state append. Added `AddTaskForm` — a controlled input that collects a task title and sends it up via props. `addTask` in Dashboard builds the Task object and appends it immutably. New tasks appear live in the correct project card.
 - **Day 5** — Derived state and conditional rendering. Added All / To Do / Done filter tabs with live counts, local per-card filter state, and context-aware empty states. Full decision rationale in the decision log.
+
+### Testing
+- Vitest unit tests for pure logic (`src/utils/*.test.ts`)
+- `npm test` runs once (CI); `npm run test:watch` for local development
+- Filter logic lives in `filterTasks.ts`, separate from `ProjectCard`, specifically so it can be tested without rendering a component
 
 ## Run locally
 

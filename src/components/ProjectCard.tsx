@@ -2,14 +2,13 @@ import { useState } from "react";
 import type { Project } from "../types";
 import { CheckCircle2, Circle } from "lucide-react";
 import { AddTaskForm } from "./AddTaskForm";     
+import { filterTasks, type TaskFilter } from "../utils/filterTasks";
 
-type TaskFilter = "all" | "todo" | "done";
 const FILTER_TABS: { value: TaskFilter; label: string }[] = [
   { value: "all", label: "All" },
   { value: "todo", label: "To Do" },
   { value: "done", label: "Done" },
 ];
-
 function ProjectCard({ project, onToggleTask,onAddTask }: { 
   project: Project; 
   onToggleTask: (projectId: number, taskId: string) => void; 
@@ -17,11 +16,7 @@ function ProjectCard({ project, onToggleTask,onAddTask }: {
 }) {
   const [filter, setFilter] = useState<TaskFilter>("all");
   const completedTasks = project.tasks.filter((t) => t.completed).length;
-  const visibleTasks = project.tasks.filter((task) => {
-    if (filter === "todo") return !task.completed;
-    if (filter === "done") return task.completed;
-    return true; // "all"
-  });
+  const visibleTasks = filterTasks(project.tasks, filter);
   const totalTasks = project.tasks.length;
   const todoCount = totalTasks - completedTasks;
   const progress =
