@@ -11,3 +11,9 @@ export interface Project {
   status: string;
   tasks: Task[];
 }
+
+export interface OutletContextType {
+  projects: Project[];
+  toggleTask: (projectId: number, taskId: string) => void;
+  addTask: (projectId: number, title: string) => void;
+}
