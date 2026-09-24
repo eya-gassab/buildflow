@@ -101,3 +101,37 @@
 ### GitHub Actions runs lint → typecheck → build → test, in that order
 
 - **Why:** fail fast on the cheapest check first. No point building or testing code that doesn't even lint or type-check.
+
+## Day 6: Routing (react-router-dom)
+
+### Nested routes with a Layout + Outlet, not flat routes
+
+- **Options:** (a) flat routes, each page re-renders its own sidebar/header, (b) one layout route wrapping all pages via `<Outlet>`
+- **Chose:** (b)
+- **Why:** sidebar/header are identical across every page. Flat routes would duplicate that JSX per page and, worse, duplicate the `projects` state itself — breaking single source of truth.
+- **Trade-off:** one extra indirection (`useOutletContext`) to read shared state in child pages, vs. plain props.
+
+### Shared state lifted to `Layout`, passed via `useOutletContext`
+
+- **Options:** (a) keep state in `Dashboard.tsx` and prop-drill into route components, (b) lift to `Layout`, pass through `<Outlet context={...}>`
+- **Chose:** (b)
+- **Why:** `Layout` is the first component that's a parent to *every* route. Prop-drilling doesn't work once "children" are picked by the router (`<Outlet>`), not by JSX nesting — `useOutletContext` is the equivalent of props for that boundary.
+- **Revisit when:** if 3+ levels of nested routes need the same state, consider React Context instead (Outlet context only reaches direct route children).
+
+### `findProjectById` extracted as a pure utility, not inline in the page
+
+- **Why:** same reasoning as `filterTasks` (Day 5/CI) — pure input→output logic, testable without rendering. Added `findProjectById.test.ts` covering match, no-match, and `NaN` (invalid `:id` from the URL) — same code path handles both "wrong id" and "garbage id".
+
+### Option B for `/` vs `/projects`: separate `DashboardHome` and `ProjectsPage`
+
+- **Options:** (a) same grid component for both routes (index + `/projects`), (b) distinct components — slim overview vs full grid
+- **Chose:** (b)
+- **Why:** sidebar already has separate "Dashboard" and "Projects" nav items; making them render identical content would contradict the UI's own information architecture.
+
+### `NavLink` with `end` prop on the root link only
+
+- **Why:** `NavLink` prefix-matches by default — `to="/"` would show active on every route, since every path starts with `/`. `end={to === "/"}` restricts exact matching to the root link only; other links (`/projects`, `/tasks`) don't need it since nothing else prefixes them.
+
+### Catch-all route (`path="*"`) placed last
+
+- **Why:** `<Routes>` matches top-to-bottom, first match wins. `*` matches anything, so placing it first would swallow every real route before it's checked. Order carries real logic here, unlike CSS/Tailwind specificity resolving conflicts automatically.

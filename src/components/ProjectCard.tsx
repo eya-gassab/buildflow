@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import type { Project } from "../types";
 import { CheckCircle2, Circle } from "lucide-react";
 import { AddTaskForm } from "./AddTaskForm";     
@@ -45,7 +46,9 @@ function ProjectCard({ project, onToggleTask,onAddTask }: {
     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-5 flex flex-col gap-4">      {/* Header */}
       <div className="flex items-center justify-between">
         <h3 className="text-base font-semibold text-gray-800">
-          {project.name}
+          <Link to={`/projects/${project.id}`} className="hover:underline">
+            {project.name}
+          </Link>
         </h3>
         <span
           className={`text-xs font-medium px-2 py-1 rounded-full ${statusColor[project.status] ?? "bg-gray-100 text-gray-500"}`}

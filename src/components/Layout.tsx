@@ -1,6 +1,6 @@
 import { Outlet } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import { LayoutDashboard, FolderKanban, Settings } from "lucide-react";
+import { LayoutDashboard, FolderKanban, Settings, ListTodo  } from "lucide-react";
 import { useState } from "react";
 import type { Project, Task, OutletContextType } from "../types";
 import { projects as initialProjects } from "../data";
@@ -52,6 +52,7 @@ function Layout() {
         <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest px-3 mb-4">Buildflow</p>
         <NavItem to="/" icon={<LayoutDashboard size={16} />} label="Dashboard" />
         <NavItem to="/projects" icon={<FolderKanban size={16} />} label="Projects" />
+        <NavItem to="/tasks" icon={<ListTodo size={16} />} label="Tasks" />
         <NavItem to="/settings" icon={<Settings size={16} />} label="Settings" />
       </aside>
 
