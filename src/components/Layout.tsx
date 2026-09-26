@@ -7,18 +7,6 @@ import { projects as initialProjects } from "../data";
 
 const LOCAL_STORAGE_KEY = "buildflow-projects";
 
-/***
- * useState's lazy initializer — 
- * pass a function, not a value, when the initial state needs real work (reading storage).
- *  It runs exactly once, ever.
- * 
- * Debouncing — the standard technique behind every "autosave" 
- * you've ever seen (Docs, Notion, Figma): wait for the user to pause, then act. 
- * It's built from setTimeout + cleanup.
- * 
- * useEffect cleanup : cancel a pending save if the data changes again before the timer fires.
-***/
-
 function Layout() {
   const [projects, setProjects] = useState<Project[]>(() => {
     const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -28,8 +16,6 @@ function Layout() {
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "saved">("idle");
 
   useEffect(() => {
-    setSaveStatus("saving");
-
     const timeoutId = setTimeout(() => {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(projects));
       setSaveStatus("saved");
@@ -39,14 +25,15 @@ function Layout() {
   }, [projects]);
 
   useEffect(() => {
-  const remaining = projects.reduce(
-    (acc, p) => acc + p.tasks.filter(t => !t.completed).length,
-    0
-  );
+    const remaining = projects.reduce(
+      (acc, p) => acc + p.tasks.filter(t => !t.completed).length,
+      0
+    );
     document.title = remaining > 0 ? `(${remaining}) Buildflow` : "Buildflow";
   }, [projects]);
 
   const toggleTask = (projectId: number, taskId: string) => {
+    setSaveStatus("saving");
     setProjects(prevProjects => prevProjects.map(project =>
       project.id !== projectId
         ? project
@@ -62,6 +49,7 @@ function Layout() {
   };
 
   const addTask = (projectId: number, title: string): void => {
+    setSaveStatus("saving");
     const newTask: Task = {
       id: crypto.randomUUID(),
       title: title,
@@ -83,7 +71,7 @@ function Layout() {
     toggleTask,
     addTask,
   };
-  
+
   return (
     <div className="flex min-h-screen bg-gray-50 font-sans">
 
@@ -102,7 +90,6 @@ function Layout() {
     </div>
   );
 }
-
 
 function NavItem({ to, icon, label }: { to: string; icon: React.ReactNode; label: string }) {
   return (
