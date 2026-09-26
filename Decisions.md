@@ -135,3 +135,20 @@
 ### Catch-all route (`path="*"`) placed last
 
 - **Why:** `<Routes>` matches top-to-bottom, first match wins. `*` matches anything, so placing it first would swallow every real route before it's checked. Order carries real logic here, unlike CSS/Tailwind specificity resolving conflicts automatically.
+
+## Day 7 — useEffect, real persistence, and prop-drilling limits
+
+**What I built:**
+- Auto-save: projects persist to localStorage, read via a lazy useState initializer on mount, written via a debounced useEffect (600ms) with cleanup to cancel stale timers.
+- Save status ("saving"/"saved") surfaced through a new prop chain: DashboardHome → StatsRow → SaveIndicator.
+- Browser tab title synced to remaining task count via a second useEffect.
+
+**Prop-drilling pain observed:**
+StatsRow forwards `saveStatus` without using it — a pure pass-through. This is the same shape that gets worse as the tree grows.
+
+**Options going forward (not implemented yet):**
+- React Context — good for slow-changing shared values (saveStatus, theme), but every consumer re-renders on change.
+- Zustand / Redux Toolkit — better for complex, fine-grained shared UI state, at the cost of a new dependency.
+- Composition (children/slots) — avoids some pass-through without a new tool, but doesn't fit every case.
+
+**Decision:** defer the fix. Current depth (2 hops) doesn't yet justify the added complexity of Context or a state library.

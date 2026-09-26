@@ -1,8 +1,9 @@
 import { useOutletContext } from "react-router-dom";
 import type { OutletContextType } from "../types";
+import SaveIndicator from "../components/SaveIndicator";
 
 function DashboardHome() {
-  const { projects } = useOutletContext<OutletContextType>();
+  const { projects, saveStatus } = useOutletContext<OutletContextType>();
 
   const totalTasks = projects.reduce((acc, p) => acc + p.tasks.length, 0);
   const doneTasks = projects.reduce(
@@ -16,10 +17,32 @@ function DashboardHome() {
         <h1 className="text-xl font-bold text-gray-900">Dashboard</h1>
         <p className="text-sm text-gray-400 mt-0.5">Track your projects and tasks</p>
       </div>
-      <div className="flex gap-4 text-sm">
-        <Stat label="Projects" value={projects.length} />
-        <Stat label="Tasks Done" value={`${doneTasks}/${totalTasks}`} />
-      </div>
+      <StatsRow
+        projectCount={projects.length}
+        doneTasks={doneTasks}
+        totalTasks={totalTasks}
+        saveStatus={saveStatus}
+      />
+    </div>
+  );
+}
+
+function StatsRow({
+  projectCount,
+  doneTasks,
+  totalTasks,
+  saveStatus,
+}: {
+  projectCount: number;
+  doneTasks: number;
+  totalTasks: number;
+  saveStatus: OutletContextType["saveStatus"];
+}) {
+  return (
+    <div className="flex items-center gap-4 text-sm">
+      <Stat label="Projects" value={projectCount} />
+      <Stat label="Tasks Done" value={`${doneTasks}/${totalTasks}`} />
+      <SaveIndicator status={saveStatus} />
     </div>
   );
 }

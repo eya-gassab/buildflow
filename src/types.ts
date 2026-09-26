@@ -12,8 +12,11 @@ export interface Project {
   tasks: Task[];
 }
 
+export type SaveStatus = "idle" | "saving" | "saved";
+
 export interface OutletContextType {
   projects: Project[];
+  saveStatus: SaveStatus;
   toggleTask: (projectId: number, taskId: string) => void;
   addTask: (projectId: number, title: string) => void;
 }
